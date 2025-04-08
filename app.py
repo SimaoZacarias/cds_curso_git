@@ -12,9 +12,9 @@ def load_data():
     
 def main():
 
-    df = load_data()
+    df_raw = load_data()
 
-    st.dataframe(df)
+    st.dataframe(df_raw)
 
 if __name__ == '_main_':
     main()
