@@ -44,6 +44,8 @@ def main():
 
     st.dataframe(df_raw)
 
+read_question13()
+
 if __name__ == '_main_':
     main()
 
