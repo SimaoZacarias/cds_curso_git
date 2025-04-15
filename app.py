@@ -1,59 +1,92 @@
 import pandas as pd
-import numpy as np
 import streamlit as st
+
+import src.answers as asw
 from src.extraction import load_data
 
-st.set_page_config(layout='wide')
+st.set_page_config(layout="wide")
 
 
+def create_dataframe_section(df):
+    st.title("Sctions - Database Description")
 
-def load_data():
-    return pd.read_csv('/Users/simaozacarias/Documents/data/02-Python/repos/cursoGit/projeto/data/exported/bikes.xlsx')
-    
-def read_question13(df):
+    col_1, col_2 = st.columns(2)
 
+    col_1.header("Database")
+    col_1.dataframe(df, height=530)
 
-    unico_dono = df1[df1['owner'] == '1st owner'].shape[0]
-    unico_dono
+    col_2.header("Data Description")
 
-    print(f'A base de dados possui {unico_dono} motos de um único dono')
+    data_description = """
+                        | Coluna | Descrição |
+                        | :----- | --------: |
+                        | ID | Identificador da linha/registro |
+                        | name | Fabricante e Modelo da Moto |
+                        | selling_price | Preço de Venda |
+                        | year | Ano de Fabricação da Moto |
+                        | seller_type | Tipo de Vendedor - Se é vendedor pessoal ou revendedor |
+                        | owner | Se é primeiro, segundo, terceiro ou quarto dono da moto |
+                        | km_driven | Quantidade de Quilometros percorrido pela moto |
+                        | ex_showroom_price | Preço da motocicleta sem as taxas de seguro e registro |
+                        | age | Quantidade de anos em que a moto está em uso |
+                        | km_class | Classificação das motos conforme a quilometragem percorrida |
+                        | km_per_year | Quantidade de Quilometros percorridos a cada ano |
+                        | km_per_month | Quantidade de Quilometros percorridos por mês |
+                        | company | Fabricanete da Motocicleta |
+    """
 
-    df_grouped = df1.groupby('owner').agg(
-        qty = pd.NamedAgg('id', 'count')
-        ).sort_values('qty').reset_index()
-
-    ax = sns.barplot(
-            data=df_grouped,
-            x = 'owner',
-            y = 'qty'
-        )
-
-    ax.bar_label(ax.containers[0])
-
-    ax.set(
-            title = 'Quantidade de Motos por tipo de dono',
-            xlabel = 'Tipo de Dono',
-            ylabel = 'Quantidade de donos'
-        );
-
-    return None
-
-def main():
-
-    df_raw = load_data()
-
-    st.dataframe(df_raw)
-
-read_question13()
-
-read_question13()
-
-create_answers_section()
+    col_2.markdown(data_description)
 
 
+def create_answers_section(df):
+    st.title("Main Questions Answers")
+
+    st.header("First Round")
+    st.subheader(
+        "How many bikes are being sold by their owners and how many bikes are being sold by distributors?"
+    )
+    asw.rd1_question_9(df)
+
+    st.subheader("How many bikes are being sold are bikes from a unique owner?")
+    asw.rd1_question_13(df)
+
+    st.subheader(
+        "Are high kilometer bikes more expensive than bikes with lower kilometer?"
+    )
+    asw.rd1_question_14(df)
+
+    st.subheader(
+        "Are the bikes with a unique owner more expense on avarege than the other bikes?"
+    )
+    asw.rd2_question_1(df)
+
+    st.subheader(
+        "Are the bikes that have more owners also the bikes with more kilometers traveled on avarege?"
+    )
+    asw.rd2_question_2(df)
+
+    st.subheader("Which company has the most bikes registered?")
+    asw.rd2_question_7(df)
+
+    st.subheader("Which company has the most expensive bikes on avarege?")
+    asw.rd3_question_2(df)
+
+    st.subheader(
+        "Are the company that has the most expensive bikes registered also the company with the most bikes registered?"
+    )
+    asw.rd3_question_5(df)
+
+    st.subheader("Which bikes are good for buying?")
+    asw.rd3_question_7(df)
 
 
-if __name__ == '_main_':
-    main()
+def create_main_layout():
+    df = load_data()
+
+    create_dataframe_section(df)
+
+    create_answers_section(df)
 
 
+if __name__ == "__main__":
+    create_main_layout()
